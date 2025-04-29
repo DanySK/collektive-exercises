@@ -1,0 +1,26 @@
+incarnation: collektive
+
+network-model:
+  type: ConnectWithinDistance
+  parameters: [1.5]
+
+_pool: &program
+  - time-distribution: 1
+    type: Event
+    actions:
+      - type: RunCollektiveProgram
+        parameters: [collektive.exercises.EntrypointKt.entrypoint]
+
+deployments:
+  - type: Grid
+    parameters: [0, 0, 20, 20, 1, 1, 0.3, 0.3]
+    programs:
+      - *program
+
+monitors:
+  type: SwingGUI
+  parameters:
+    graphics: effects.json
+
+launcher:
+  auto-start: false
