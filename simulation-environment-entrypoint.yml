@@ -20,7 +20,7 @@ deployments:
 monitors:
   type: SwingGUI
   parameters:
-    graphics: effects.json
+    graphics: entrypoint.json
 
 launcher:
   auto-start: false

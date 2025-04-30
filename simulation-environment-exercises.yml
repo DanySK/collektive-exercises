@@ -1,0 +1,29 @@
+incarnation: collektive
+
+network-model:
+  type: ConnectWithinDistance
+  parameters: [2]
+
+_pool: &program
+  - time-distribution: 1
+    type: Event
+    actions:
+      - type: RunCollektiveProgram
+        parameters: [collektive.exercises.ExercisesKt.networkDiameter]
+
+deployments:
+  - type: GraphStreamDeployment
+    parameters: [15, 2, 0, PreferentialAttachment]
+    programs:
+      - *program
+    contents:
+      - molecule: isSource
+        concentration: true
+
+monitors:
+  type: SwingGUI
+  parameters:
+    graphics: exercises.json
+
+launcher:
+  auto-start: false
