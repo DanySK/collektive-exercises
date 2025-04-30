@@ -1,4 +1,4 @@
-# Combining Spatial Computing Blocks [-> `Exercises.kt`](src\main\kotlin\collektive\exercises\Exercises.kt):
+# Combining Spatial Computing Blocks [-> `Exercises.kt`](src/main/kotlin/collektive/exercises/Exercises.kt):
 
 1. Select a node identified as `source`, chosen by finding the node with minimum uid in the network, assuming that the diameter of the network is no more than 10 hops. 
 2. Compute the distances between any node and the `source` using the adaptive bellman-ford algorithm.
