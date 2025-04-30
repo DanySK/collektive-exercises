@@ -26,4 +26,5 @@ monitors:
     graphics: exercises.json
 
 launcher:
-  auto-start: false
+  parameters:
+    autoStart: false

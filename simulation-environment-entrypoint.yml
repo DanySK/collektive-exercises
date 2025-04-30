@@ -23,4 +23,5 @@ monitors:
     graphics: entrypoint.json
 
 launcher:
-  auto-start: false
+  parameters:
+    autoStart: false
