@@ -14,9 +14,57 @@ fun Aggregate<Int>.metricDistance(simulatedDevice: CollektiveDevice<Euclidean2DP
     }
 }
 
-fun Aggregate<Int>.entrypoint(simulatedDevice: CollektiveDevice<Euclidean2DPosition>): Double {
+fun CollektiveDevice<Euclidean2DPosition>.isObstacle(): Boolean {
+    val position = environment.getPosition(node)
+    // lower block
+    val obstacle = position.x > 3 && position.y in 3.0..5.0 ||
+        // left block
+        position.x in 3.0..5.0 && position.y in 3.0..17.0 ||
+        // upper block
+        position.x in 3.0..17.0 && position.y in 15.0..17.0 ||
+        // right block
+        position.x in 15.0..17.0 && position.y in 7.0..17.0 ||
+        // lower middle block
+        position.x in 7.0..17.0 && position.y in 7.0..9.0
+    return obstacle.also { set("obstacle", obstacle) }
+}
+
+private fun Boolean.toNiceLookingDouble() = if (this) 50.0 else 0.0
+
+fun Aggregate<Int>.entrypoint(simulatedDevice: CollektiveDevice<Euclidean2DPosition>): Any? {
+
+    // Gradient
     val programOutput = distanceTo(simulatedDevice.localId == 0, metricDistance(simulatedDevice))
-    // format the result to three decimals
-    val formattedResult = round(programOutput * 1000) / 1000.0
-    return formattedResult
+
+    // Channel
+//    val programOutput = channelAroundObstacles(
+//        isObstacle = simulatedDevice.isObstacle(),
+//        source = localId == 19,
+//        destination = localId == 270,
+//        width = 0.5,
+//        metric = metricDistance(simulatedDevice),
+//    ).toNiceLookingDouble()
+
+//    val programOutput =
+//        if (simulatedDevice.isObstacle()) 0.0 else distanceTo(localId == 19, metricDistance(simulatedDevice))
+
+//    // Distance to destination
+//    val programOutput =
+//        if (simulatedDevice.isObstacle()) 0.0 else distanceTo(localId == 270, metricDistance(simulatedDevice))
+
+//    // Sum of the distances
+//    val programOutput = if (simulatedDevice.isObstacle()) {
+//        0.0
+//    } else {
+//        listOf(19, 270).sumOf {
+//            alignedOn(it) { distanceTo(localId == it, metricDistance(simulatedDevice)) }
+//        }
+//    }
+
+//    // Broadcast
+//    val programOutput = broadcast(localId == 19, localId).toDouble()
+
+//    // Minimum distance broadcast
+//    val programOutput = distance(localId == 19, localId == 270, metricDistance(simulatedDevice))
+    return round(programOutput * 1000) / 1000.0
 }
