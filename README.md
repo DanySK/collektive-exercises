@@ -9,4 +9,4 @@
 #### Advanced exercises:
 5. Consider the source identified in exercise 1, determine nodes 3 hops away from the source.
 6. Consider a set of sources, determine the number of hops towards the nearest source.
-7. Determine the the max number of hops towards the nearest source identified in exercise 6.
+7. Determine the the max number of hops towards the nearest source identified in exercise 6 in the neighborhood.

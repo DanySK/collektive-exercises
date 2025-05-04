@@ -3,9 +3,13 @@ package collektive.exercises
 import it.unibo.collektive.aggregate.api.Aggregate
 import it.unibo.alchemist.collektive.device.CollektiveDevice
 import it.unibo.collektive.alchemist.device.sensors.EnvironmentVariables
+import it.unibo.collektive.aggregate.api.neighboring
 import it.unibo.collektive.aggregate.api.share
+import it.unibo.collektive.stdlib.spreading.gossipMax
 import it.unibo.collektive.stdlib.spreading.hopGradientCast
 import it.unibo.collektive.stdlib.fields.maxBy
+import it.unibo.collektive.stdlib.fields.max
+import it.unibo.collektive.stdlib.fields.maxValue
 import collektive.exercises.SourceDistance
 
 /**
@@ -54,20 +58,15 @@ fun Aggregate<Int>.nearestSource(environment: EnvironmentVariables): SourceDista
 }
 
 /**
- * Determine the number of hops towards the nearest source.
+ * Determine the number of hops towards the nearest source in the neighborhood.
 */
 fun Aggregate<Int>.distanceFurthestNodeToSource(environment: EnvironmentVariables): Int {
     val nearestSource = nearestSource(environment)
-    val res = share(nearestSource){ field ->
-        val values = field.neighborsValues + field.local.value
-        values.maxBy {
-            if(it.sourceID == nearestSource.sourceID){
-                it.distance
-            }else{
-                Int.MIN_VALUE
-            } 
+    return neighboring(nearestSource).mapValues { 
+        if(it.sourceID == nearestSource.sourceID){
+            it.distance
+        }else{
+            Int.MIN_VALUE
         }
-    }
-    environment["isFurthest"] = res.distance == nearestSource.distance 
-    return res.distance
+    }.maxValue(nearestSource.distance)
 }

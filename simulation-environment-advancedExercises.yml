@@ -19,8 +19,6 @@ deployments:
     contents:
       - molecule: isSource
         concentration: true
-      - molecule: isFurthest
-        concentration: false
       - molecule: sources
         concentration: [0, 14]
 
