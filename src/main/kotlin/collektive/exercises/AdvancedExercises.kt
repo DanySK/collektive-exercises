@@ -56,19 +56,18 @@ fun Aggregate<Int>.nearestSource(environment: EnvironmentVariables): SourceDista
 /**
  * Determine the number of hops towards the nearest source.
 */
-fun Aggregate<Int>.furthestNodeToSource(environment: EnvironmentVariables): Int? {
+fun Aggregate<Int>.distanceFurthestNodeToSource(environment: EnvironmentVariables): Int {
     val nearestSource = nearestSource(environment)
-    environment["nearestSource"] = nearestSource
-    return share(nearestSource){ field ->
+    val res = share(nearestSource){ field ->
         val values = field.neighborsValues + field.local.value
         values.maxBy {
-            if(it.sourceID == field.local.value.sourceID){
+            if(it.sourceID == nearestSource.sourceID){
                 it.distance
             }else{
                 Int.MIN_VALUE
             } 
         }
-    }.also{
-        environment["isFurthest"] = it.distance == nearestSource.distance 
-    }.distance
+    }
+    environment["isFurthest"] = res.distance == nearestSource.distance 
+    return res.distance
 }

@@ -34,7 +34,7 @@
       "val": 10
     },
     "molFilter": true,
-    "molString": "collektive.exercises.AdvancedExercisesKt.searchSource",
+    "molString": "collektive.exercises.AdvancedExercisesKt.distanceFurthestNodeToSource",
     "molPropertyFilter": true,
     "property": "",
     "writingPropertyValue": true,

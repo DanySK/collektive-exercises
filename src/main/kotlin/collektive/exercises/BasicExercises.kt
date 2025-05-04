@@ -22,7 +22,7 @@ fun Aggregate<Int>.searchSource(environment: EnvironmentVariables): Boolean = sh
     }
 
 /**
- * Compute the [distances] between any node and the [source] using the adaptive bellman-ford algorithm.
+ * Compute the [distances] between any node and the [source].
 */
 fun Aggregate<Int>.distanceToSource(environment: EnvironmentVariables) = hopDistanceTo(searchSource(environment))
 

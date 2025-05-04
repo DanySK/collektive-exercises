@@ -9,7 +9,7 @@ _pool: &program
     type: Event
     actions:
       - type: RunCollektiveProgram
-        parameters: [collektive.exercises.AdvancedExercisesKt.furthestNodeToSource]
+        parameters: [collektive.exercises.AdvancedExercisesKt.distanceFurthestNodeToSource]
 
 deployments:
   - type: GraphStreamDeployment
@@ -21,8 +21,6 @@ deployments:
         concentration: true
       - molecule: isFurthest
         concentration: false
-      - molecule: nearestSource
-        concentration: null
       - molecule: sources
         concentration: [0, 14]
 
