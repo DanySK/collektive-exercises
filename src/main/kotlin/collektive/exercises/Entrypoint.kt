@@ -5,6 +5,7 @@ import it.unibo.alchemist.model.positions.Euclidean2DPosition
 import it.unibo.collektive.aggregate.Field
 import it.unibo.collektive.aggregate.api.Aggregate
 import it.unibo.collektive.aggregate.api.neighboring
+import kotlin.math.round
 
 fun Aggregate<Int>.metricDistance(simulatedDevice: CollektiveDevice<Euclidean2DPosition>): Field<Int, Double> {
     val localPosition = simulatedDevice.environment.getPosition(simulatedDevice.node)
@@ -16,6 +17,6 @@ fun Aggregate<Int>.metricDistance(simulatedDevice: CollektiveDevice<Euclidean2DP
 fun Aggregate<Int>.entrypoint(simulatedDevice: CollektiveDevice<Euclidean2DPosition>): Double {
     val programOutput = distanceTo(simulatedDevice.localId == 0, metricDistance(simulatedDevice))
     // format the result to three decimals
-    val formattedResult = String.format("%.3f", programOutput).toDouble()
+    val formattedResult = round(programOutput * 1000) / 1000.0
     return formattedResult
 }
