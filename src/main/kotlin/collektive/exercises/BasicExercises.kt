@@ -28,7 +28,6 @@ fun Aggregate<Int>.distanceToSource(environment: EnvironmentVariables) = hopDist
 
 /**
  * Calculate in the [source] an estimate of the true [diameter] of the network (the maximum distance of a device in the network).
- * 
  * Broadcast the [diameter] to every node in the network.
 */ 
 fun Aggregate<Int>.networkDiameter(environment: EnvironmentVariables, distanceSensor: CollektiveDevice<*>): Int {
