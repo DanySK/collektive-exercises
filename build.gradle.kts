@@ -1,3 +1,6 @@
+import java.awt.Toolkit
+import kotlin.math.floor
+
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.collektive)
@@ -26,5 +29,10 @@ val runInSimulation by tasks.registering(JavaExec::class) {
     description = "Run the simulation"
     classpath = sourceSets.main.get().runtimeClasspath
     mainClass.set("it.unibo.alchemist.Alchemist")
+    val screenSize = Toolkit.getDefaultToolkit().screenSize
+    val minResolution = minOf(screenSize.width, screenSize.height)
+    val scaleFactor = floor(minResolution.toDouble() / 1080)
+    println(scaleFactor)
+    jvmArgs = listOf("-Dsun.java2d.uiScale=2.0")
     args = listOf("run", "simulation-environment.yml")
 }
