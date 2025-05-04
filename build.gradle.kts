@@ -38,10 +38,18 @@ val runInSimulation by tasks.registering(JavaExec::class) {
     args = listOf("run", "simulation-environment-entrypoint.yml")
 }
 
-val runExercises by tasks.registering(JavaExec::class) {
+val runBasicExercises by tasks.registering(JavaExec::class) {
     group = "Collektive exercises"
-    description = "Run the exercises"
+    description = "Run the basic exercises"
     classpath = sourceSets.main.get().runtimeClasspath
     mainClass.set("it.unibo.alchemist.Alchemist")
-    args = listOf("run", "simulation-environment-exercises.yml")
+    args = listOf("run", "simulation-environment-basicExercises.yml")
+}
+
+val runAdvancedExercises by tasks.registering(JavaExec::class) {
+    group = "Collektive exercises"
+    description = "Run the Advanced exercises"
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass.set("it.unibo.alchemist.Alchemist")
+    args = listOf("run", "simulation-environment-advancedExercises.yml")
 }

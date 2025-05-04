@@ -2,32 +2,37 @@ package collektive.exercises
 
 import it.unibo.collektive.aggregate.api.Aggregate
 import it.unibo.alchemist.collektive.device.CollektiveDevice
-import it.unibo.collektive.stdlib.spreading.gossipMin
-import it.unibo.collektive.stdlib.spreading.gossipMax
+import it.unibo.collektive.alchemist.device.sensors.EnvironmentVariables
 import it.unibo.collektive.stdlib.spreading.hopDistanceTo
 import it.unibo.collektive.stdlib.spreading.gradientCast
+import it.unibo.collektive.stdlib.fields.minValue
+import it.unibo.collektive.stdlib.fields.maxValue
+import it.unibo.collektive.aggregate.api.share
 
 /**
  * Select a node identified as [source], chosen by finding the node with [minimum uid] 
- * in the network, assuming that the diameter of the network is no more than 10 hops.
+ * in the network.
 */
-fun Aggregate<Int>.searchSource(): Boolean =
-    gossipMin(localId).let { minValue ->
-        localId == minValue
+fun Aggregate<Int>.searchSource(environment: EnvironmentVariables): Boolean = share(localId){ field ->
+        field.minValue(localId)
+    }.let { minValue ->
+        val isSource = localId == minValue
+        environment["isSource"] = isSource
+        isSource
     }
 
 /**
  * Compute the [distances] between any node and the [source] using the adaptive bellman-ford algorithm.
 */
-fun Aggregate<Int>.distanceToSource() = hopDistanceTo(searchSource())
+fun Aggregate<Int>.distanceToSource(environment: EnvironmentVariables) = hopDistanceTo(searchSource(environment))
 
 /**
  * Calculate in the [source] an estimate of the true [diameter] of the network (the maximum distance of a device in the network).
  * 
  * Broadcast the [diameter] to every node in the network.
 */ 
-fun Aggregate<Int>.networkDiameter(distanceSensor: CollektiveDevice<*>): Int {
-    val isFurthest = isMaxValue(distanceToSource())
+fun Aggregate<Int>.networkDiameter(environment: EnvironmentVariables, distanceSensor: CollektiveDevice<*>): Int {
+    val isFurthest = isMaxValue(distanceToSource(environment))
     val distanceToFurthest = hopDistanceTo(isFurthest)
     val flagNodeWithMaxHopToFurthest = isMaxValue(distanceToFurthest)
     val broadcastMessage = broadcast(
@@ -54,7 +59,8 @@ fun Aggregate<Int>.broadcast(distanceSensor: CollektiveDevice<*>, from: Boolean,
 /**
  * Function that identifies the [maximum value] and returns true if the passed value is the maximum.
  */
-fun Aggregate<Int>.isMaxValue(localValue: Int): Boolean = 
-    gossipMax(localValue).let { maxValue ->
-        localValue == maxValue
+fun Aggregate<Int>.isMaxValue(localValue: Int): Boolean = share(localValue){ field ->
+        field.maxValue(localValue)
+    }.let { value ->
+        localValue == value
     }

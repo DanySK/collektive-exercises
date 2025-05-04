@@ -9,7 +9,7 @@ _pool: &program
     type: Event
     actions:
       - type: RunCollektiveProgram
-        parameters: [collektive.exercises.ExercisesKt.networkDiameter]
+        parameters: [collektive.exercises.BasicExercisesKt.networkDiameter]
 
 deployments:
   - type: GraphStreamDeployment
@@ -23,7 +23,7 @@ deployments:
 monitors:
   type: SwingGUI
   parameters:
-    graphics: exercises.json
+    graphics: basicExercises.json
 
 launcher:
   parameters:
