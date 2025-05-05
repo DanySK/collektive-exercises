@@ -13,53 +13,20 @@ import it.unibo.collektive.aggregate.api.share
  * Select a node identified as [source], chosen by finding the node with [minimum uid] 
  * in the network.
 */
-fun Aggregate<Int>.searchSource(environment: EnvironmentVariables): Boolean = share(localId){ field ->
-        field.minValue(localId)
-    }.let { minValue ->
-        val isSource = localId == minValue
-        environment["isSource"] = isSource
-        isSource
-    }
+fun Aggregate<Int>.searchSource(environment: EnvironmentVariables): Boolean = TODO()
 
 /**
  * Compute the [distances] between any node and the [source].
 */
-fun Aggregate<Int>.distanceToSource(environment: EnvironmentVariables) = hopDistanceTo(searchSource(environment))
+fun Aggregate<Int>.distanceToSource(environment: EnvironmentVariables): Int = TODO()
 
 /**
  * Calculate in the [source] an estimate of the true [diameter] of the network (the maximum distance of a device in the network).
  * Broadcast the [diameter] to every node in the network.
 */ 
-fun Aggregate<Int>.networkDiameter(environment: EnvironmentVariables, distanceSensor: CollektiveDevice<*>): Int {
-    val isFurthest = isMaxValue(distanceToSource(environment))
-    val distanceToFurthest = hopDistanceTo(isFurthest)
-    val flagNodeWithMaxHopToFurthest = isMaxValue(distanceToFurthest)
-    val broadcastMessage = broadcast(
-        distanceSensor, 
-        from = flagNodeWithMaxHopToFurthest, 
-        payload = distanceToFurthest.toDouble()
-    ).toInt()
-    return when {
-        distanceToFurthest <= broadcastMessage -> broadcastMessage
-        else -> distanceToFurthest
-    }
-}
+fun Aggregate<Int>.networkDiameter(environment: EnvironmentVariables, distanceSensor: CollektiveDevice<*>): Int = TODO()
 
 /**
  * Computes the [gradientCast] from the [source] with the [value] that is the distance from the [source] to the target.
  */
-fun Aggregate<Int>.broadcast(distanceSensor: CollektiveDevice<*>, from: Boolean, payload: Double): Double =
-    gradientCast(
-        source = from,
-        local = payload,
-        metric = with(distanceSensor) { distances() },
-    )
-    
-/**
- * Function that identifies the [maximum value] and returns true if the passed value is the maximum.
- */
-fun Aggregate<Int>.isMaxValue(localValue: Int): Boolean = share(localValue){ field ->
-        field.maxValue(localValue)
-    }.let { value ->
-        localValue == value
-    }
+fun Aggregate<Int>.broadcast(distanceSensor: CollektiveDevice<*>, from: Boolean, payload: Double): Double = TODO()
