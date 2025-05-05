@@ -9,4 +9,4 @@
 #### Advanced exercises [-> `AdvancedExercises.kt`](src/main/kotlin/collektive/exercises/AdvancedExercises.kt):
 5. Consider the source identified in exercise 1, determine nodes 3 hops away from the source.
 6. Consider a set of sources, determine the number of hops towards the nearest source.
-7. Determine the the max number of hops towards the nearest source identified in exercise 6 in the neighborhood.
+7. Determine the max number of hops in the node neighborhood towards the nearest source identified in exercise 6.
