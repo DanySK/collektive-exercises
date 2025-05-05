@@ -24,7 +24,7 @@ fun Aggregate<Int>.searchSource(environment: EnvironmentVariables): Boolean = sh
 /**
  * Compute the [distances] between any node and the [source].
 */
-fun Aggregate<Int>.distanceToSource(environment: EnvironmentVariables) = hopDistanceTo(searchSource(environment))
+fun Aggregate<Int>.distanceToSource(environment: EnvironmentVariables): Int = hopDistanceTo(searchSource(environment))
 
 /**
  * Calculate in the [source] an estimate of the true [diameter] of the network (the maximum distance of a device in the network).

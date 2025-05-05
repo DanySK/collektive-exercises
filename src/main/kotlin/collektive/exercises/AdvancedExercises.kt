@@ -35,7 +35,7 @@ data class SourceDistance(val sourceID: Int, val distance: Int)
 /**
  * Calculating the [distance] from a node to a [given source].
  */
-fun Aggregate<Int>.distanceToSource(sourceID: List<Int>) =  
+fun Aggregate<Int>.distanceToSource(sourceID: List<Int>): SourceDistance =  
     hopGradientCast(
         source = sourceID.contains(localId),
         local = SourceDistance(localId, 0),
