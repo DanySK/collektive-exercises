@@ -35,9 +35,9 @@ or
 Depending on what type of exercises you are doing.
 2. Add the same function name at line 37 of corrisponding json file:
 ```
-    simulation-environment-basicExercises.json
+    basicExercises.json
 ```
 or 
 ```
-    simulation-environment-advancedExercises.yml
+    advancedExercises.json
 ```
