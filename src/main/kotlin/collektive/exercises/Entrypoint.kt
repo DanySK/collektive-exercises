@@ -5,6 +5,7 @@ import it.unibo.alchemist.model.positions.Euclidean2DPosition
 import it.unibo.collektive.aggregate.Field
 import it.unibo.collektive.aggregate.api.Aggregate
 import it.unibo.collektive.aggregate.api.neighboring
+import it.unibo.collektive.stdlib.spreading.distanceTo
 import kotlin.math.round
 
 fun Aggregate<Int>.metricDistance(simulatedDevice: CollektiveDevice<Euclidean2DPosition>): Field<Int, Double> {
@@ -34,7 +35,7 @@ private fun Boolean.toNiceLookingDouble() = if (this) 50.0 else 0.0
 fun Aggregate<Int>.entrypoint(simulatedDevice: CollektiveDevice<Euclidean2DPosition>): Any? {
 
     // Gradient
-    val programOutput = distanceTo(simulatedDevice.localId == 0, metricDistance(simulatedDevice))
+//    val programOutput = myDistanceTo(simulatedDevice.localId == 0, metricDistance(simulatedDevice))
 
     // Channel
 //    val programOutput = channelAroundObstacles(
@@ -46,18 +47,18 @@ fun Aggregate<Int>.entrypoint(simulatedDevice: CollektiveDevice<Euclidean2DPosit
 //    ).toNiceLookingDouble()
 
 //    val programOutput =
-//        if (simulatedDevice.isObstacle()) 0.0 else distanceTo(localId == 19, metricDistance(simulatedDevice))
+//        if (simulatedDevice.isObstacle()) 0.0 else myDistanceTo(localId == 19, metricDistance(simulatedDevice))
 
 //    // Distance to destination
 //    val programOutput =
-//        if (simulatedDevice.isObstacle()) 0.0 else distanceTo(localId == 270, metricDistance(simulatedDevice))
+//        if (simulatedDevice.isObstacle()) 0.0 else myDistanceTo(localId == 270, metricDistance(simulatedDevice))
 
 //    // Sum of the distances
 //    val programOutput = if (simulatedDevice.isObstacle()) {
 //        0.0
 //    } else {
 //        listOf(19, 270).sumOf {
-//            alignedOn(it) { distanceTo(localId == it, metricDistance(simulatedDevice)) }
+//            alignedOn(it) { myDistanceTo(localId == it, metricDistance(simulatedDevice)) }
 //        }
 //    }
 
@@ -66,5 +67,13 @@ fun Aggregate<Int>.entrypoint(simulatedDevice: CollektiveDevice<Euclidean2DPosit
 
 //    // Minimum distance broadcast
 //    val programOutput = distance(localId == 19, localId == 270, metricDistance(simulatedDevice))
+
+    // Distance from library
+//    val programOutput = distanceFromLibrary(19, 270, metricDistance(simulatedDevice))
+
+    // Channel from library
+    val programOutput =
+        channelFromLibrary(simulatedDevice.isObstacle(), 19, 270, 0.5, metricDistance(simulatedDevice))
+            .toNiceLookingDouble()
     return round(programOutput * 1000) / 1000.0
 }

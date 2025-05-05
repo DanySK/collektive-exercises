@@ -6,12 +6,14 @@ import it.unibo.collektive.aggregate.api.Aggregate
 import it.unibo.collektive.aggregate.api.share
 import it.unibo.collektive.stdlib.doubles.FieldedDoubles.plus
 import it.unibo.collektive.stdlib.fields.minValue
+import it.unibo.collektive.stdlib.spreading.distanceTo
+import it.unibo.collektive.stdlib.spreading.gradientCast
 import kotlin.Double.Companion.POSITIVE_INFINITY as infinity
 
 /**
  * Bellman-Ford adaptive gradient
  */
-fun <ID: Any> Aggregate<ID>.distanceTo(source: Boolean, metric: Field<ID, Double>) = share(infinity) { distances ->
+fun <ID: Any> Aggregate<ID>.myDistanceTo(source: Boolean, metric: Field<ID, Double>) = share(infinity) { distances ->
     val throughNeighbor = (distances + metric).minValue() ?: infinity
     if (source) 0.0 else throughNeighbor
 }
@@ -43,7 +45,7 @@ inline fun <ID: Any, reified T> Aggregate<ID>.broadcast(source: Boolean, value: 
 }
 
 fun <ID: Any> Aggregate<ID>.distance(source: Boolean, destination: Boolean, metric: Field<ID, Double>) =
-    broadcast(source, distanceTo(destination, metric))
+    broadcast(source, myDistanceTo(destination, metric))
 
 fun <ID: Any> Aggregate<ID>.channel(
     source: Boolean,
@@ -51,7 +53,7 @@ fun <ID: Any> Aggregate<ID>.channel(
     width: Double,
     metric: Field<ID, Double>,
 ): Boolean =
-    distanceTo(source, metric) + distanceTo(destination, metric) < distance(source, destination, metric) + width
+    myDistanceTo(source, metric) + myDistanceTo(destination, metric) < distance(source, destination, metric) + width
 
 fun <ID: Any> Aggregate<ID>.channelAroundObstacles(
     isObstacle: Boolean,
@@ -61,3 +63,20 @@ fun <ID: Any> Aggregate<ID>.channelAroundObstacles(
     metric: Field<ID, Double>,
 ): Boolean = !isObstacle && channel(source, destination, width, metric)
 
+inline fun <reified ID: Any> Aggregate<ID>.distanceFromLibrary(source: ID, destination: ID, metric: Field<ID, Double>) =
+    gradientCast(
+        source = source == localId,
+        local = distanceTo(destination == localId, metric = metric),
+        metric
+    )
+
+inline fun <reified ID: Any> Aggregate<ID>.channelFromLibrary(
+    isObstacle: Boolean,
+    source: ID,
+    destination: ID,
+    width: Double,
+    metric: Field<ID, Double>,
+) = !isObstacle &&
+        distanceFromLibrary(source, destination, metric) + width >
+            distanceTo(source == localId, metric = metric) +
+                distanceTo(destination == localId, metric = metric)
