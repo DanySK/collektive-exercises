@@ -7,7 +7,7 @@
 4. Broadcast the diameter to every node in the network.
 
 #### Advanced exercises [-> `AdvancedExercises.kt`](src/main/kotlin/collektive/exercises/AdvancedExercises.kt):
-5. Consider the source identified in exercise 1, determine nodes 3 hops away from the source.
+5. Consider the source identified in exercise one, determine nodes 3 hops away from the source.
 6. Consider a set of sources, determine the number of hops towards the nearest source.
 7. Determine the max number of hops in the node neighborhood towards the nearest source identified in exercise six.
 
