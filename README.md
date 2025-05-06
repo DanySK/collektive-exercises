@@ -9,7 +9,7 @@
 #### Advanced exercises [-> `AdvancedExercises.kt`](src/main/kotlin/collektive/exercises/AdvancedExercises.kt):
 5. Consider the source identified in exercise 1, determine nodes 3 hops away from the source.
 6. Consider a set of sources, determine the number of hops towards the nearest source.
-7. Determine the max number of hops in the node neighborhood towards the nearest source identified in exercise 6.
+7. Determine the max number of hops in the node neighborhood towards the nearest source identified in exercise six.
 
 ## How to Run the Exercises
 To run the exercises, use the following Gradle commands:
@@ -17,7 +17,7 @@ To run the exercises, use the following Gradle commands:
     ```bash
         ./gradlew runBasicExercises
     ```
-- **Advanced Exercises** (1–4):
+- **Advanced Exercises** (5–7):
     ```bash
         ./gradlew runAdvancedExercises
     ```
