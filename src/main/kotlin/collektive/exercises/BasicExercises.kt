@@ -21,6 +21,11 @@ fun Aggregate<Int>.searchSource(environment: EnvironmentVariables): Boolean = TO
 fun Aggregate<Int>.distanceToSource(environment: EnvironmentVariables): Int = TODO()
 
 /**
+ * Compute the [distances] between any node and the [source] using [Bellman-Ford] algorithm.
+*/
+fun Aggregate<Int>.distanceToSource(environment: EnvironmentVariables, distanceSensor: CollektiveDevice<*>): Int = TODO()
+
+/**
  * Calculate in the [source] an estimate of the true [diameter] of the network (the maximum distance of a device in the network).
  * Broadcast the [diameter] to every node in the network.
 */ 
