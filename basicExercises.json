@@ -34,7 +34,7 @@
       "val": 10
     },
     "molFilter": true,
-    "molString": "collektive.exercises.BasicExercisesKt.networkDiameter",
+    "molString": "collektive.exercises.BasicExercisesKt.distanceToSource",
     "molPropertyFilter": true,
     "property": "",
     "writingPropertyValue": true,

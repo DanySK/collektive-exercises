@@ -5,6 +5,7 @@ import it.unibo.alchemist.collektive.device.CollektiveDevice
 import it.unibo.collektive.alchemist.device.sensors.EnvironmentVariables
 import it.unibo.collektive.stdlib.spreading.hopDistanceTo
 import it.unibo.collektive.stdlib.spreading.gradientCast
+import it.unibo.collektive.stdlib.spreading.bellmanFordGradientCast
 import it.unibo.collektive.stdlib.fields.minValue
 import it.unibo.collektive.stdlib.fields.maxValue
 import it.unibo.collektive.aggregate.api.share
@@ -25,6 +26,18 @@ fun Aggregate<Int>.searchSource(environment: EnvironmentVariables): Boolean = sh
  * Compute the [distances] between any node and the [source].
 */
 fun Aggregate<Int>.distanceToSource(environment: EnvironmentVariables): Int = hopDistanceTo(searchSource(environment))
+
+/**
+ * Compute the [distances] between any node and the [source] using [Bellman-Ford] algorithm.
+*/
+fun Aggregate<Int>.distanceToSource(environment: EnvironmentVariables, distanceSensor: CollektiveDevice<*>): Int = bellmanFordGradientCast(
+        source = searchSource(environment),
+        local = 0,
+        accumulateData = { _, _, dist ->
+            dist + 1
+        },
+        metric = with(distanceSensor) { distances() }
+    )
 
 /**
  * Calculate in the [source] an estimate of the true [diameter] of the network (the maximum distance of a device in the network).
