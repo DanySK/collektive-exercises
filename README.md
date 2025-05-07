@@ -2,9 +2,8 @@
 
 #### Basic exercises [-> `BasicExercises.kt`](src/main/kotlin/collektive/exercises/BasicExercises.kt):
 1. Select a node identified as `source`, chosen by finding the node with minimum uid in the network. 
-2. (a) Compute the distances between any node and the `source`.
-
--- (b) Compute the distances between any node and the `source` using Bellman-Ford algorithm.
+2(a). Compute the distances between any node and the `source`.
+2(b). Compute the distances between any node and the `source` using Bellman-Ford algorithm.
 3. Calculate in the source an estimate of the true diameter of the network (the maximum distance of a device in the network).
 4. Broadcast the diameter to every node in the network.
 
