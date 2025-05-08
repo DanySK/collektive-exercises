@@ -34,7 +34,7 @@ val runInSimulation by tasks.registering(JavaExec::class) {
     val minResolution = minOf(screenSize.width, screenSize.height)
     val scaleFactor = floor(minResolution.toDouble() / 1080)
     println(scaleFactor)
-    jvmArgs = listOf("-Dsun.java2d.uiScale=2.0")
+    jvmArgs = listOf("-Dsun.java2d.uiScale=$scaleFactor")
     args = listOf("run", "simulation-environment-entrypoint.yml")
 }
 

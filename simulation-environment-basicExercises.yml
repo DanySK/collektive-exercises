@@ -9,7 +9,7 @@ _pool: &program
     type: Event
     actions:
       - type: RunCollektiveProgram
-        parameters: [collektive.exercises.BasicExercisesKt.distanceToSource]
+        parameters: [collektive.exercises.BaseExercisesKt.distanceToSource]
 
 deployments:
   - type: GraphStreamDeployment
@@ -23,7 +23,7 @@ deployments:
 monitors:
   type: SwingGUI
   parameters:
-    graphics: basicExercises.json
+    graphics: baseExercises.json
 
 launcher:
   parameters:

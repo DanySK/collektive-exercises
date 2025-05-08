@@ -1,30 +1,40 @@
 package collektive.exercises
 
+import it.unibo.collektive.aggregate.Field
 import it.unibo.collektive.aggregate.api.Aggregate
-import it.unibo.alchemist.collektive.device.CollektiveDevice
-import it.unibo.collektive.alchemist.device.sensors.EnvironmentVariables
 import it.unibo.collektive.aggregate.api.neighboring
-import it.unibo.collektive.stdlib.spreading.hopGradientCast
+import it.unibo.collektive.alchemist.device.sensors.EnvironmentVariables
 import it.unibo.collektive.stdlib.fields.maxValue
-import collektive.exercises.SourceDistance
+import it.unibo.collektive.stdlib.spreading.distanceTo
+import it.unibo.collektive.stdlib.spreading.gossipMax
+import it.unibo.collektive.stdlib.spreading.gossipMin
+import it.unibo.collektive.stdlib.spreading.hopGradientCast
+import kotlin.math.abs
+import kotlin.math.hypot
 
 /**
  * Consider the [source] identified in exercise 1, determine nodes 3 [hops] away from the [source].
  */
 const val maxHops = 2
-fun Aggregate<Int>.determineNodesInRange(environment: EnvironmentVariables): Int{
-    val isSource = searchSource(environment)
-    return hopGradientCast(
-        source = isSource,
-        local = localId,
-        accumulateData = { fromSource, _, value ->
-            if (fromSource > maxHops) {
-                Int.MAX_VALUE
-            } else {
-                value
-            }
-        }
-    )
+fun Aggregate<Int>.bullsEye(metric: Field<Int, Double>): Int {
+    val distToRandom = distanceTo(gossipMin(localId) == localId, metric = metric)
+    val firstExtreme = gossipMax(distToRandom to localId, compareBy { it.first }).second
+    val distanceToExtreme = distanceTo(firstExtreme == localId, metric = metric)
+    val (distanceBetweenExtremes, otherExtreme) =
+        gossipMax(distanceToExtreme to localId, compareBy { it.first })
+    val distanceToOtherExtreme = distanceTo(otherExtreme == localId, metric = metric)
+    val distanceFromOpposedDiagonal = abs(distanceToExtreme - distanceToOtherExtreme)
+    val distanceFromMainDiameter = abs(distanceBetweenExtremes - distanceToExtreme - distanceToOtherExtreme)
+    val approximateDistance = hypot(distanceFromOpposedDiagonal, distanceFromMainDiameter)
+    val centralNode = gossipMin(approximateDistance to localId, compareBy { it.first }).second
+    val distanceFromCenter = distanceTo(centralNode == localId)
+    return when (distanceFromCenter) {
+        in 0.0..1.0 ->25
+        in 1.0..4.0 -> 75
+        in 4.0..7.0 -> 50
+        in 7.0..10.0 -> 0
+        else -> 85
+    }
 }
 
 /**
