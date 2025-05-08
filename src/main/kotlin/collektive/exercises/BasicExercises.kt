@@ -11,10 +11,10 @@ import it.unibo.collektive.stdlib.fields.maxValue
 import it.unibo.collektive.aggregate.api.share
 
 /**
- * Select a node identified as [source], chosen by finding the node with [minimum uid] 
- * in the network.
-*/
-fun Aggregate<Int>.searchSource(environment: EnvironmentVariables): Boolean = share(localId){ field ->
+ * Find the node with the smallest ID in the network, without using the standard library functions.
+ */
+fun Aggregate<Int>.searchSource(environment: EnvironmentVariables): Boolean =
+    share(localId){ field ->
         field.minValue(localId)
     }.let { minValue ->
         val isSource = localId == minValue
