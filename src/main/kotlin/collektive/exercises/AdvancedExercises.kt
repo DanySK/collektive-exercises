@@ -4,18 +4,21 @@ import it.unibo.collektive.aggregate.Field
 import it.unibo.collektive.aggregate.api.Aggregate
 import it.unibo.collektive.aggregate.api.neighboring
 import it.unibo.collektive.alchemist.device.sensors.EnvironmentVariables
+import it.unibo.collektive.stdlib.consensus.boundedElection
 import it.unibo.collektive.stdlib.fields.maxValue
 import it.unibo.collektive.stdlib.spreading.distanceTo
 import it.unibo.collektive.stdlib.spreading.gossipMax
 import it.unibo.collektive.stdlib.spreading.gossipMin
+import it.unibo.collektive.stdlib.spreading.gradientCast
 import it.unibo.collektive.stdlib.spreading.hopGradientCast
+import it.unibo.collektive.stdlib.spreading.intGradientCast
+import it.unibo.collektive.stdlib.util.hops
 import kotlin.math.abs
 import kotlin.math.hypot
 
 /**
  * Consider the [source] identified in exercise 1, determine nodes 3 [hops] away from the [source].
  */
-const val maxHops = 2
 fun Aggregate<Int>.bullsEye(metric: Field<Int, Double>): Int {
     val distToRandom = distanceTo(gossipMin(localId) == localId, metric = metric)
     val firstExtreme = gossipMax(distToRandom to localId, compareBy { it.first }).second
@@ -36,6 +39,13 @@ fun Aggregate<Int>.bullsEye(metric: Field<Int, Double>): Int {
         else -> 85
     }
 }
+
+//fun Aggregate<Int>.multiLeader() = distanceTo(boundedElection(5) == localId)
+fun Aggregate<Int>.multiLeader() = intGradientCast(
+    boundedElection(5) == localId,
+    localId,
+    hops()
+)
 
 /**
  * Defined a data class to represent the association between a [source] node and its [distance].

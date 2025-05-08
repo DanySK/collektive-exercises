@@ -33,7 +33,7 @@ fun CollektiveDevice<Euclidean2DPosition>.isObstacle(): Boolean {
 private fun Boolean.toNiceLookingDouble() = if (this) 50.0 else 0.0
 
 fun Aggregate<Int>.entrypoint(simulatedDevice: CollektiveDevice<Euclidean2DPosition>): Any? {
-    val programOutput: Any = bullsEye(metricDistance(simulatedDevice))
+    val programOutput: Any = multiLeader()
     val toDisplay: Double = when(programOutput) {
         is Number -> programOutput.toDouble()
         is Boolean -> programOutput.toNiceLookingDouble()

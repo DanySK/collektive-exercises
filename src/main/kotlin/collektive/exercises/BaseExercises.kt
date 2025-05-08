@@ -52,16 +52,6 @@ fun Aggregate<Int>.networkDiameter(metric: Field<Int, Double>): Double {
     val isFurthest = gossipMax(distanceFromRandomPoint) == distanceFromRandomPoint
     val distanceToFurthest = distanceTo(isFurthest, metric = metric)
     return gossipMax(distanceToFurthest)
-//    val flagNodeWithMaxHopToFurthest = isMaxValue(distanceToFurthest)
-//    val broadcastMessage = broadcast(
-//        from = flagNodeWithMaxHopToFurthest,
-//        payload = distanceToFurthest.toDouble(),
-//        metric = metric
-//    ).toInt()
-//    return when {
-//        distanceToFurthest <= broadcastMessage -> broadcastMessage
-//        else -> distanceToFurthest
-//    }
 }
 
 /**
