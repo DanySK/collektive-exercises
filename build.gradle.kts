@@ -37,19 +37,3 @@ val runInSimulation by tasks.registering(JavaExec::class) {
     jvmArgs = listOf("-Dsun.java2d.uiScale=$scaleFactor")
     args = listOf("run", "simulation-environment-entrypoint.yml")
 }
-
-val runBasicExercises by tasks.registering(JavaExec::class) {
-    group = "Collektive exercises"
-    description = "Run the basic exercises"
-    classpath = sourceSets.main.get().runtimeClasspath
-    mainClass.set("it.unibo.alchemist.Alchemist")
-    args = listOf("run", "simulation-environment-basicExercises.yml")
-}
-
-val runAdvancedExercises by tasks.registering(JavaExec::class) {
-    group = "Collektive exercises"
-    description = "Run the advanced exercises"
-    classpath = sourceSets.main.get().runtimeClasspath
-    mainClass.set("it.unibo.alchemist.Alchemist")
-    args = listOf("run", "simulation-environment-advancedExercises.yml")
-}

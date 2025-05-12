@@ -2,14 +2,10 @@ package collektive.exercises
 
 import it.unibo.collektive.aggregate.Field
 import it.unibo.collektive.aggregate.api.Aggregate
-import it.unibo.collektive.aggregate.api.neighboring
-import it.unibo.collektive.alchemist.device.sensors.EnvironmentVariables
 import it.unibo.collektive.stdlib.consensus.boundedElection
-import it.unibo.collektive.stdlib.fields.maxValue
 import it.unibo.collektive.stdlib.spreading.distanceTo
 import it.unibo.collektive.stdlib.spreading.gossipMax
 import it.unibo.collektive.stdlib.spreading.gossipMin
-import it.unibo.collektive.stdlib.spreading.gradientCast
 import it.unibo.collektive.stdlib.spreading.hopGradientCast
 import it.unibo.collektive.stdlib.spreading.intGradientCast
 import it.unibo.collektive.stdlib.util.hops
@@ -17,7 +13,14 @@ import kotlin.math.abs
 import kotlin.math.hypot
 
 /**
- * Consider the [source] identified in exercise 1, determine nodes 3 [hops] away from the [source].
+ * Draws a bullseye pattern based on network distances and node positions.
+ *
+ * This function identifies two distant nodes (extremes) in the network to define a main axis,
+ * then computes an approximate center point (intersection of two diagonals),
+ * and finally assigns a value based on the distance from this central node, creating concentric zones.
+ *
+ * The returned value is intended for visualization (e.g., as a color gradient from 0 to 100),
+ * allowing the rendering of a bullseye pattern across the network.
  */
 fun Aggregate<Int>.bullsEye(metric: Field<Int, Double>): Int {
     val distToRandom = distanceTo(gossipMin(localId) == localId, metric = metric)
@@ -40,6 +43,10 @@ fun Aggregate<Int>.bullsEye(metric: Field<Int, Double>): Int {
     }
 }
 
+/**
+ * Elects multiple leaders in the network using bounded election, forming groups of up to 5 nodes.
+ * Each node computes its distance (in hops) to the leader of its group.
+ */
 //fun Aggregate<Int>.multiLeader() = distanceTo(boundedElection(5) == localId)
 fun Aggregate<Int>.multiLeader() = intGradientCast(
     boundedElection(5) == localId,
@@ -48,41 +55,18 @@ fun Aggregate<Int>.multiLeader() = intGradientCast(
 )
 
 /**
- * Defined a data class to represent the association between a [source] node and its [distance].
+ * Defined a data class to represent the association between a [sourceID] node and its [distance].
 */ 
 data class SourceDistance(val sourceID: Int, val distance: Int)
 
 /**
- * Calculating the [distance] from a node to a [given source].
+ * Calculating the *distance* from a node to a [sourceIDs] using a hop-gradient.
  */
-fun Aggregate<Int>.distanceToSource(sourceID: List<Int>): SourceDistance =  
+fun Aggregate<Int>.distanceToSource(sourceIDs: List<Int>): SourceDistance =
     hopGradientCast(
-        source = sourceID.contains(localId),
+        source = sourceIDs.contains(localId),
         local = SourceDistance(localId, 0),
         accumulateData = { _, _, value ->
             SourceDistance(value.sourceID, value.distance + 1)
         }
     )
-    
-/**
- * Determine the number of hops towards the [nearest source].
-*/
-fun Aggregate<Int>.nearestSource(environment: EnvironmentVariables): SourceDistance {
-    val sourceID: List<Int> = environment["sources"]
-    environment["isSource"] = sourceID.contains(localId)
-    return distanceToSource(sourceID)
-}
-
-/**
- * Determine the number of [hops] towards the nearest [source] in the neighborhood.
-*/
-fun Aggregate<Int>.distanceFurthestNodeToSource(environment: EnvironmentVariables): Int {
-    val nearestSource = nearestSource(environment)
-    return neighboring(nearestSource).mapValues { 
-        if(it.sourceID == nearestSource.sourceID){
-            it.distance
-        }else{
-            Int.MIN_VALUE
-        }
-    }.maxValue(nearestSource.distance)
-}

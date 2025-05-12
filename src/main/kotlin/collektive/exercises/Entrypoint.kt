@@ -8,6 +8,9 @@ import it.unibo.collektive.aggregate.api.neighboring
 import it.unibo.collektive.stdlib.spreading.distanceTo
 import kotlin.math.round
 
+/**
+ * Computes a distance metric field between the current node and its neighbors.
+ */
 fun Aggregate<Int>.metricDistance(simulatedDevice: CollektiveDevice<Euclidean2DPosition>): Field<Int, Double> {
     val localPosition = simulatedDevice.environment.getPosition(simulatedDevice.node)
     return neighboring(localPosition).mapValues {
@@ -15,6 +18,14 @@ fun Aggregate<Int>.metricDistance(simulatedDevice: CollektiveDevice<Euclidean2DP
     }
 }
 
+/**
+ * Determines whether the current device is positioned within a static obstacle region.
+ *
+ * The environment is partitioned into rectangular blocks that represent obstacles.
+ * If the current device lies within one of these blocks, it is marked as an obstacle.
+ *
+ * @return True if the node is inside an obstacle area, false otherwise.
+ */
 fun CollektiveDevice<Euclidean2DPosition>.isObstacle(): Boolean {
     val position = environment.getPosition(node)
     // lower block
@@ -32,8 +43,14 @@ fun CollektiveDevice<Euclidean2DPosition>.isObstacle(): Boolean {
 
 private fun Boolean.toNiceLookingDouble() = if (this) 50.0 else 0.0
 
+/**
+ * Main entrypoint for the aggregate program.
+ *
+ * Executes the selected behavior (e.g., `multiLeader`) and prepares its result
+ * for visualization.
+ */
 fun Aggregate<Int>.entrypoint(simulatedDevice: CollektiveDevice<Euclidean2DPosition>): Any? {
-    val programOutput: Any = multiLeader()
+    val programOutput: Any = getLocalId() // CHANGE HERE, SELECTING YOUR MAIN FUNCTION
     val toDisplay: Double = when(programOutput) {
         is Number -> programOutput.toDouble()
         is Boolean -> programOutput.toNiceLookingDouble()
