@@ -61,15 +61,12 @@ fun Aggregate<Int>.bullsEye(metric: Field<Int, Double>): Int {
 }
 
 /**
- * Elects multiple leaders in the network using bounded election, forming groups of up to 5 nodes.
- * Each node computes its distance (in hops) to the leader of its group.
+ * Elects multiple leaders in the network using bounded election.
+ * Each node:
+ * - computes its distance (in hops) to the leader of its group.
+ * - belongs to a group whose leader is at most 5 hops away.
  */
-//fun Aggregate<Int>.multiLeader() = distanceTo(boundedElection(5) == localId)
-fun Aggregate<Int>.multiLeader() = intGradientCast(
-    boundedElection(5) == localId,
-    localId,
-    hops()
-)
+fun Aggregate<Int>.multiLeader() = distanceTo(boundedElection(5) == localId)
 
 /**
  * Defined a data class to represent the association between a [sourceID] node and its [distance].
