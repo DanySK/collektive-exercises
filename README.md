@@ -13,7 +13,7 @@ To run a specific aggregate function on all nodes, you need to modify the `entry
 ```kotlin
 fun Aggregate<Int>.entrypoint(simulatedDevice: CollektiveDevice<Euclidean2DPosition>): Any? {
     val programOutput: Any = getLocalId() // ← Replace this with your custom aggregate function
-    return programOutput
+    ...
 }
 ```
 
