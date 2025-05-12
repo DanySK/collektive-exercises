@@ -12,4 +12,4 @@ develocity {
     }
 }
 
-rootProject.name = "Template-for-Kotlin-JVM-Projects"
+rootProject.name = "Collective exercises"
