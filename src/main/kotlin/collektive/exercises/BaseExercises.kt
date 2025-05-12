@@ -42,7 +42,8 @@ fun Aggregate<Int>.distanceToSource(): Int = 0
 fun Aggregate<Int>.distanceToSource(metric: Field<Int, Double>): Double = 0.0
 
 /**
- * Calculate in the *source* an estimate of the true **diameter of the network** (the maximum distance of a device in the network).
- * Broadcast the *diameter* to every node in the network.
+ * Estimates the **diameter of the network** (i.e., the maximum hop-distance between any two devices).
+ *
+ * The result is computed using hop count (not metric distance) and broadcast to all nodes.
  */
-fun Aggregate<Int>.networkDiameter(metric: Field<Int, Double>): Double = 0.0
+fun Aggregate<Int>.networkDiameter(): Double = 0.0
