@@ -50,7 +50,7 @@ private fun Boolean.toNiceLookingDouble() = if (this) 50.0 else 0.0
  * for visualization.
  */
 fun Aggregate<Int>.entrypoint(simulatedDevice: CollektiveDevice<Euclidean2DPosition>): Any? {
-    val programOutput: Any = getLocalId() // CHANGE HERE, SELECTING YOUR MAIN FUNCTION
+    val programOutput: Any = getLocalId() // ← Replace this with your custom aggregate function
     val toDisplay: Double = when(programOutput) {
         is Number -> programOutput.toDouble()
         is Boolean -> programOutput.toNiceLookingDouble()
