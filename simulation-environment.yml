@@ -32,7 +32,7 @@ deployments:
 monitors:
   type: SwingGUI
   parameters:
-    graphics: entrypoint.json
+    graphics: effects.json
 
 launcher:
   parameters:
