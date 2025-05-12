@@ -20,7 +20,7 @@ Replace `getLocalId()` with any of the defined functions (e.g., `distanceToSourc
 
 
 ### 🔁 Switching Network Topologies
-The file simulation-environment.yml allows you to switch between different network topologies:
+The file [simulation-environment.yml](simulation-environment.yml) allows you to switch between different network topologies:
 
 *Simple* network:
 ```yaml
