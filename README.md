@@ -12,12 +12,42 @@ To run a specific aggregate function on all nodes, you need to modify the `entry
 
 ```kotlin
 fun Aggregate<Int>.entrypoint(simulatedDevice: CollektiveDevice<Euclidean2DPosition>): Any? {
-    val programOutput: Any = getLocalId() // ← Replace this with your custom aggregate function
-    ...
+  val programOutput: Any = getLocalId() // ← Replace this with your custom aggregate function
+  ...
 }
 ```
-
 Replace `getLocalId()` with any of the defined functions (e.g., `distanceToSource()`, `bullsEye(metric)`, `multiLeader()`, etc.) to visualize or test different behaviors.
+
+
+### 🔁 Switching Network Topologies
+The file [simulation-environment.yml](simulation-environment.yml) allows you to switch between different network topologies:
+
+*Simple* network:
+```yaml
+deployments:
+  - type: GraphStreamDeployment
+    parameters: [15, 2, 0, PreferentialAttachment]
+    programs:
+      - *program
+    contents:
+      - molecule: isSource
+        concentration: true
+```
+*Complex* network (Grid 20x20):
+
+```yaml
+deployments:
+- type: Grid
+  parameters: [0, 0, 20, 20, 1, 1, 0.3, 0.3]
+  programs:
+  - *program
+```
+
+To switch the network topology:
+
+- Uncomment the block you want to use.
+- Comment the other one.
+- Then run the simulation again.
 
 ---
 
