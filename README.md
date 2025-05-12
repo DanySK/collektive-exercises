@@ -12,8 +12,8 @@ To run a specific aggregate function on all nodes, you need to modify the `entry
 
 ```kotlin
 fun Aggregate<Int>.entrypoint(simulatedDevice: CollektiveDevice<Euclidean2DPosition>): Any? {
-    val programOutput: Any = getLocalId() // ← Replace this with your custom aggregate function
-    ...
+  val programOutput: Any = getLocalId() // ← Replace this with your custom aggregate function
+  ...
 }
 ```
 Replace `getLocalId()` with any of the defined functions (e.g., `distanceToSource()`, `bullsEye(metric)`, `multiLeader()`, etc.) to visualize or test different behaviors.
@@ -71,31 +71,37 @@ To run the simulation, use the following command from the root directory:
 
 ## 📚 Exercises Overview
 
-### `getLocalId()`
+### Files
+
+- File: [BaseExercises](src/main/kotlin/collektive/exercises/BaseExercises.kt)
+- File: [AdvancedExercises](src/main/kotlin/collektive/exercises/AdvancedExercises.kt)
+
+### List
+#### `getLocalId()`
 Returns the current node's `localId`.
 
-### `incrementValue()`
+#### `incrementValue()`
 Starts from 0 and increments by 1 at each computational round.
 
-### `maxValueFromNeighbours()`
+#### `maxValueFromNeighbours()`
 Returns the maximum `localId` among neighboring nodes. Returns `0` if isolated.
 
-### `searchSourceNS()`
+#### `searchSourceNS()`
 Finds the node with the smallest `localId` **without using standard library functions**.
 
-### `searchSource()`
+#### `searchSource()`
 Finds the node with the smallest `localId` **using standard library utilities**.
 
-### `distanceToSource()`
+#### `distanceToSource()`
 Calculates hop-based distances from the source (node with smallest `localId`).
 
-### `distanceToSource(metric)`
+#### `distanceToSource(metric)`
 Uses Bellman-Ford with a provided metric (`Field<Int, Double>`) to calculate distances.
 
-### `networkDiameter()`
+#### `networkDiameter()`
 Computes the hop-count-based diameter of the network.
 
-### `bullsEye(metric)`
+#### `bullsEye(metric)`
 Creates a "bullseye" pattern by:
 - Identifying two distant nodes,
 - Approximating the center using diagonal intersections,
@@ -105,10 +111,10 @@ The result resembles concentric zones around the center.
 
 Or visually: [bullseye.png](static/bullseye.png)
 
-### `multiLeader()`
+#### `multiLeader()`
 Elects multiple leaders using a bounded strategy. Nodes compute hop distances to their group leader.
 
-### `distanceToSource(sourceIDs: List<Int>)`
+#### `distanceToSource(sourceIDs: List<Int>)`
 Computes hop-distance to the nearest node in a list of source IDs.  
 Returns a `SourceDistance(sourceID, distance)` object.
 
