@@ -7,8 +7,6 @@ import it.unibo.collektive.stdlib.spreading.distanceTo
 import it.unibo.collektive.stdlib.spreading.gossipMax
 import it.unibo.collektive.stdlib.spreading.gossipMin
 import it.unibo.collektive.stdlib.spreading.hopGradientCast
-import it.unibo.collektive.stdlib.spreading.intGradientCast
-import it.unibo.collektive.stdlib.util.hops
 import kotlin.math.abs
 import kotlin.math.hypot
 
