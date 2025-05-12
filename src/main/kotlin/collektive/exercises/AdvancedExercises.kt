@@ -11,6 +11,11 @@ import kotlin.math.abs
 import kotlin.math.hypot
 
 /**
+ * Defined a data class to represent the association between a [sourceID] node and its [distance].
+ */
+data class SourceDistance(val sourceID: Int, val distance: Int)
+
+/**
  * Draws a bullseye pattern based on network distances and node positions.
  *
  * This function identifies two distant nodes (extremes) in the network to define a main axis,
@@ -65,11 +70,6 @@ fun Aggregate<Int>.bullsEye(metric: Field<Int, Double>): Int {
  * - belongs to a group whose leader is at most 5 hops away.
  */
 fun Aggregate<Int>.multiLeader() = distanceTo(boundedElection(5) == localId)
-
-/**
- * Defined a data class to represent the association between a [sourceID] node and its [distance].
-*/ 
-data class SourceDistance(val sourceID: Int, val distance: Int)
 
 /**
  * Calculating the *distance* from a node to a [sourceIDs] using a hop-gradient.
