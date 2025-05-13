@@ -1,3 +1,4 @@
+import org.gradle.jvm.toolchain.internal.JavaToolchain
 import java.awt.Toolkit
 import kotlin.math.floor
 
@@ -18,10 +19,10 @@ dependencies {
     implementation(libs.bundles.alchemist)
 }
 
+fun JavaToolchainSpec.java21() = languageVersion.set(JavaLanguageVersion.of(21))
+
 kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
-    }
+    jvmToolchain { java21() }
 }
 
 val runInSimulation by tasks.registering(JavaExec::class) {
@@ -34,4 +35,6 @@ val runInSimulation by tasks.registering(JavaExec::class) {
     val scaleFactor = floor(minResolution.toDouble() / 1080)
     jvmArgs = listOf("-Dsun.java2d.uiScale=$scaleFactor")
     args = listOf("run", "simulation-environment.yml")
+    // Use Java 21 via Gradle toolchains
+    javaLauncher.set(javaToolchains.launcherFor { java21() })
 }
