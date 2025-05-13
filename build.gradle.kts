@@ -1,5 +1,6 @@
 import org.gradle.jvm.toolchain.internal.JavaToolchain
 import java.awt.Toolkit
+import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.round
 
@@ -33,7 +34,7 @@ val runInSimulation by tasks.registering(JavaExec::class) {
     mainClass.set("it.unibo.alchemist.Alchemist")
     val screenSize = Toolkit.getDefaultToolkit().screenSize
     val minResolution = minOf(screenSize.width, screenSize.height)
-    val scaleFactor = floor(minResolution.toDouble() / 1080)
+    val scaleFactor = round(minResolution.toDouble() / 1080)
     println(scaleFactor)
     jvmArgs = listOf("-Dsun.java2d.uiScale=$scaleFactor")
     args = listOf("run", "simulation-environment.yml")
