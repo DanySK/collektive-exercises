@@ -32,7 +32,7 @@ val runInSimulation by tasks.registering(JavaExec::class) {
     mainClass.set("it.unibo.alchemist.Alchemist")
     val screenSize = Toolkit.getDefaultToolkit().screenSize
     val minResolution = minOf(screenSize.width, screenSize.height)
-    val scaleFactor = floor(minResolution.toDouble() / 1080)
+    val scaleFactor = round(minResolution.toDouble() / 1080)
     jvmArgs = listOf("-Dsun.java2d.uiScale=$scaleFactor")
     args = listOf("run", "simulation-environment.yml")
     // Use Java 21 via Gradle toolchains
