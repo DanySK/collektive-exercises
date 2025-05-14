@@ -45,7 +45,6 @@ fun Aggregate<Int>.bullsEye(metric: Field<Int, Double>): Int {
 
     // Approximates the center of the network by computing the intersection of diagonals between the two extremes,
     // and finds the closest node to that point.
-
     val distanceFromMainDiameter = abs(distanceBetweenExtremes - distanceToExtreme - distanceToOtherExtreme)
     val distanceFromOpposedDiagonal = abs(distanceToExtreme - distanceToOtherExtreme)
     val approximateDistance = hypot(distanceFromOpposedDiagonal, distanceFromMainDiameter)
