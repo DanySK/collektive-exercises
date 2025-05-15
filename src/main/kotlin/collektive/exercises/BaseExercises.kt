@@ -54,12 +54,12 @@ fun Aggregate<Int>.distanceToSource(metric: Field<Int, Double>): Double = distan
  *
  * The result is computed using hop count (not metric distance) and broadcast to all nodes.
  */
-fun Aggregate<Int>.networkDiameter(): Double {
+fun Aggregate<Int>.networkDiameter(): Int {
     val randomId = evolve(Random.Default.nextInt()) { it }
-    val distanceFromRandomPoint = distanceTo(
+    val distanceFromRandomPoint = hopDistanceTo(
         gossipMin(randomId) == randomId
     )
     val isFurthest = gossipMax(distanceFromRandomPoint) == distanceFromRandomPoint
-    val distanceToFurthest = distanceTo(isFurthest)
+    val distanceToFurthest = hopDistanceTo(isFurthest)
     return gossipMax(distanceToFurthest)
 }
