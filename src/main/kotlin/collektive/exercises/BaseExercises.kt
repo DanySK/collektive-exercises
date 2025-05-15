@@ -46,4 +46,4 @@ fun Aggregate<Int>.distanceToSource(metric: Field<Int, Double>): Double = 0.0
  *
  * The result is computed using hop count (not metric distance) and broadcast to all nodes.
  */
-fun Aggregate<Int>.networkDiameter(): Double = 0.0
+fun Aggregate<Int>.networkDiameter(): Int = 0
