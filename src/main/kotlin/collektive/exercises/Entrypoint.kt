@@ -29,14 +29,14 @@ fun CollektiveDevice<Euclidean2DPosition>.isObstacle(): Boolean {
     val position = environment.getPosition(node)
     // lower block
     val obstacle = position.x > 3 && position.y in 3.0..5.0 ||
-            // left block
-            position.x in 3.0..5.0 && position.y in 3.0..17.0 ||
-            // upper block
-            position.x in 3.0..17.0 && position.y in 15.0..17.0 ||
-            // right block
-            position.x in 15.0..17.0 && position.y in 7.0..17.0 ||
-            // lower middle block
-            position.x in 7.0..17.0 && position.y in 7.0..9.0
+        // left block
+        position.x in 3.0..5.0 && position.y in 3.0..17.0 ||
+        // upper block
+        position.x in 3.0..17.0 && position.y in 15.0..17.0 ||
+        // right block
+        position.x in 15.0..17.0 && position.y in 7.0..17.0 ||
+        // lower middle block
+        position.x in 7.0..17.0 && position.y in 7.0..9.0
     return obstacle.also { set("obstacle", obstacle) }
 }
 
