@@ -4,8 +4,9 @@ package collektive.exercises
 import it.unibo.collektive.aggregate.Field
 import it.unibo.collektive.aggregate.api.Aggregate
 import it.unibo.collektive.aggregate.api.share
+import it.unibo.collektive.aggregate.values
+import it.unibo.collektive.stdlib.collapse.min
 import it.unibo.collektive.stdlib.doubles.FieldedDoubles.plus
-import it.unibo.collektive.stdlib.fields.minValue
 import it.unibo.collektive.stdlib.spreading.distanceTo
 import it.unibo.collektive.stdlib.spreading.gradientCast
 import kotlin.Double.Companion.POSITIVE_INFINITY as infinity
@@ -14,7 +15,7 @@ import kotlin.Double.Companion.POSITIVE_INFINITY as infinity
  * Bellman-Ford adaptive gradient
  */
 fun <ID: Any> Aggregate<ID>.myDistanceTo(source: Boolean, metric: Field<ID, Double>) = share(infinity) { distances ->
-    val throughNeighbor = (distances + metric).minValue() ?: infinity
+    val throughNeighbor = (distances + metric).neighbors.values.min(infinity)
     if (source) 0.0 else throughNeighbor
 }
 
@@ -38,7 +39,7 @@ data class DistanceValue<T>(val distance: Double, val value: T) : Comparable<Dis
 inline fun <ID: Any, reified T> Aggregate<ID>.broadcast(source: Boolean, value: T): T {
     val top = DistanceValue(infinity, value)
     val myDistanceValue = share(top) { distancesToValues ->
-        val closest = distancesToValues.minValue() ?: top
+        val closest = distancesToValues.neighbors.values.min(top)
         if (source) DistanceValue(0.0, value) else closest + 1.0
     }
     return myDistanceValue.value
